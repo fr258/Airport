@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" %>
-<%@ page import="java.io.*,java.util.*" %>
-<%@ page import="javax.servlet.http.*,javax.servlet.*, java.text.ParseException,java.text.SimpleDateFormat"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*,connection.* " %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*,java.text.SimpleDateFormat"%>
 
 <!DOCTYPE html>
 <html>
@@ -19,48 +19,84 @@
 			</tr>
 		</table><br>
 		
-		<% 
-			
-			if(request.getParameter("triptype") != null || session.getAttribute("triptype") != null) {
-				if(request.getParameter("triptype") != null)
-					session.setAttribute("triptype", request.getParameter("triptype"));  %>
-				<form method="get" action="searchFlights.jsp">
-					<table>
-						<tr>
-							<td> Depart date: </td> <td> <input type="text" name="departDate" > must follow format mm/dd/yyyy </td>
+		<% if(request.getParameter("triptype") != null || request.getParameter("departDate") != null) { %>
+			<form method="get" action= "searchFlights.jsp" >
+				<%
+				try {
+					ApplicationDB db = new ApplicationDB();	
+					Connection con = db.getConnection();
+					String getAirports = "select * from airport";
+					PreparedStatement ps = con.prepareStatement(getAirports);
+			        ResultSet rs = ps.executeQuery();
+			     %>
+			        <table>
+					<tr>
+			        	<td> From: </td> <td> <select name="originAirport" size=1>
+						<%
+							while(rs.next()) { %>
+								<option value= <%=rs.getString("apID")%> > <%= rs.getString("apname") %> </option>
+							<% }
+						
+						%>
+						</select> &nbsp;<br> </td>
 						</tr>
-						<% if(session.getAttribute("triptype").equals("Round Trip")) { %>
-							<tr>
-					        	<td> Return date: </td> <td> <input type="text" name="returnDate"> must follow format mm/dd/yyyy</td>
-					        </tr>
-				        <% } %>
-				        </table>
-				        <input type="checkbox" name="isFlexible" value="yes"> Date is flexible plus minus 3 days<br>
-						<br> <input type="submit" value="submit">
-				</form> 
+					<% 
+					rs = ps.executeQuery(); %>
+					<tr> 
+						<td> To: </td> <td> <select name="destAirport" size=1>
+						<%
+							while(rs.next()) { %>
+								<option value= <%=rs.getString("apID")%> > <%= rs.getString("apname") %> </option>
+							<% }
+						
+						%>
+						</select> </td> </tr> </table> &nbsp;<br>
+				<% 
+						con.close();
+			    } 
+			    catch (Exception ex) {
+			    		out.print(ex);
+			    		out.print("select failed");
+			    }
+				%>
+				<table>
+					<tr>
+						<td> Depart date: </td> <td> 
+						<%String departStr =  (request.getParameter("departDate") == null) ? "" : request.getParameter("departDate"); %>
+						<input type="text" name="departDate"  required value=<%=departStr%>> must follow format mm/dd/yyyy </td>
+					</tr>
+					<% if(request.getParameter("returnDate") != null || (request.getParameter("triptype")!= null && request.getParameter("triptype").equals("Round Trip"))) { 
+						String returnStr =  (request.getParameter("returnDate") == null) ? "" : request.getParameter("returnDate"); %>
+						<tr>
+				        	<td> Return date: </td> <td> <input type="text" name="returnDate" required value=<%= returnStr %>> must follow format mm/dd/yyyy</td>
+				        </tr>
+			        <%}%>
+			        </table>
+			        <input type="checkbox" name="isFlexible" value="yes"> Date is flexible plus minus 3 days<br>
+					<br> <input type="submit" value="submit">
+			</form> 
 		<% 		
-				String departure, arrival;
-				
-				if((departure = request.getParameter("departDate")) != null || (arrival = request.getParameter("returnDate")) != null) {
-					try {
-						Date date = new SimpleDateFormat("dd/MM/yyyy").parse(departure);
-						out.println("selected: "+date);
-						out.println("current: "+new Date());
-						if(date.after(new Date())) {
-							
-						}
+			String departure, arrival;
+			
+			if((departure = request.getParameter("departDate")) != null) {
+				try {
+					java.util.Date dateDepart = new SimpleDateFormat("MM/dd/yyyy").parse(departure);
+					if((arrival = request.getParameter("returnDate")) != null) {
+						java.util.Date dateReturn = new SimpleDateFormat("MM/dd/yyyy").parse(arrival);
+						if(dateDepart.after(dateReturn))
+							throw new Exception();
 					}
-					catch(ParseException e) {
-						out.println("caught");
-					}
+					if(dateDepart.before(new java.util.Date()))
+						throw new Exception();
+					
+					request.getRequestDispatcher("viewFlights.jsp").forward(request, response);
 				}
-				else {
-					out.println("both null");
+				catch(Exception e) {
+					out.println("Invalid date(s). Try again. Dates may be incorrectly formatted, before the current date, or the return date might precede the depart date.");
 				}
+			}
 			 
-		} 
-			out.println("departure: "+request.getParameter("departDate"));
-		%>
+		} %>
 
 
 </body>
