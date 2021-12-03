@@ -30,27 +30,29 @@
 			        ResultSet rs = ps.executeQuery();
 			     %>
 			        <table>
-					<tr>
-			        	<td> From: </td> <td> <select name="originAirport" size=1>
-						<%
-							while(rs.next()) { %>
-								<option value= <%=rs.getString("apID")%> > <%= rs.getString("apname") %> </option>
-							<% }
-						
-						%>
-						</select> &nbsp;<br> </td>
+						<tr>
+				        	<td> From: </td> <td> <select name="originAirport" required size=1>
+							<%
+								while(rs.next()) { %>
+									<option value= <%=rs.getString("apID")%> > <%= rs.getString("apname") %> </option>
+								<% }
+							
+							%>
+							</select> &nbsp;<br> </td>
 						</tr>
-					<% 
-					rs = ps.executeQuery(); %>
-					<tr> 
-						<td> To: </td> <td> <select name="destAirport" size=1>
-						<%
-							while(rs.next()) { %>
-								<option value= <%=rs.getString("apID")%> > <%= rs.getString("apname") %> </option>
-							<% }
-						
-						%>
-						</select> </td> </tr> </table> &nbsp;<br>
+						<% 
+						rs = ps.executeQuery(); %>
+						<tr> 
+							<td> To: </td> <td> <select name="destAirport" required size=1>
+							<%
+								while(rs.next()) { %>
+									<option value= <%=rs.getString("apID")%> > <%= rs.getString("apname") %> </option>
+								<% }
+							
+							%>
+							</select> </td> 
+						</tr> 
+					</table> &nbsp;<br>
 				<% 
 						con.close();
 			    } 
