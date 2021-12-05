@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*,connection.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,10 +30,35 @@
 	</form>
 	
 	<br>
+	<form method="post" action="repModifyFlight.jsp">
+		<input type="submit" value="Modify Flight Info">
+	</form>
+	
+	<br>
+	<%
+		
+		ApplicationDB db1 = new ApplicationDB();	
+		Connection con1 = db1.getConnection(); 
+		Statement stmt1 = con1.createStatement();
+		ResultSet result1 = stmt1.executeQuery("SELECT * FROM airport");%>
+		
+	<form method="post" action="viewFlightsForAirport.jsp">
+			<select name="airport" size=1>
+			<% while(result1.next())
+				{%>
+				<option value= <%=result1.getString("apID")%> > <%=result1.getString("apname")%>
+				<%}%>
+			</select>&nbsp;<br> 
+			<input type="submit" value="View">
+	</form>
+	<%	db1.closeConnection(con1); %>
+	
+	<br>
 		<form method="post" action="welcomePage.jsp">
 			<input type="submit" value="logout">
 		</form>
 	<br>
-	
+	 
+	 
 </body>
 </html>
