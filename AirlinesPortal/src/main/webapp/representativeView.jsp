@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Representative</title>
 </head>
 <body>
 	<%
@@ -17,8 +17,15 @@
 	
 	
 	<p> Representative  View for <strong> <%= username %> </strong></p>
-	<form method="post" action="welcomePage.jsp">
-		<input type="submit" value="logout">
+	<form method="post" action="repModifyAirport.jsp">
+		<input type="submit" value="Modify Airport Info">
 	</form>
+	
+	<br>
+		<form method="post" action="welcomePage.jsp">
+			<input type="submit" value="logout">
+		</form>
+	<br>
+	
 </body>
 </html>
