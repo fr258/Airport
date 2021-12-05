@@ -22,6 +22,11 @@
 	</form>
 	
 	<br>
+	<form method="post" action="repModifyAircraft.jsp">
+		<input type="submit" value="Modify Aircraft Info">
+	</form>
+	
+	<br>
 		<form method="post" action="welcomePage.jsp">
 			<input type="submit" value="logout">
 		</form>
