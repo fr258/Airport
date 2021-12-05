@@ -54,6 +54,25 @@
 	<%	db1.closeConnection(con1); %>
 	
 	<br>
+	<%
+		
+		ApplicationDB db2 = new ApplicationDB();	
+		Connection con2 = db2.getConnection(); 
+		Statement stmt2 = con2.createStatement();
+		ResultSet result2 = stmt2.executeQuery("SELECT * FROM flight");%>
+		
+	<form method="post" action="viewWaitingListForFlight.jsp">
+			<select name="flight" size=1>
+			<% while(result2.next())
+				{%>
+				<option value= <%=result2.getString("fnum")%> > <%=result2.getString("fnum")%>
+				<%}%>
+			</select>&nbsp;<br> 
+			<input type="submit" value="View">
+	</form>
+	<%	db2.closeConnection(con2); %>
+	
+	<br>
 		<form method="post" action="welcomePage.jsp">
 			<input type="submit" value="logout">
 		</form>
