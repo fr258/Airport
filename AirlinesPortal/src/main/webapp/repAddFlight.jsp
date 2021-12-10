@@ -81,7 +81,7 @@
 				if(s[i].equals("Wednesday")){ps.setInt(1,4);	ps.executeUpdate();	}
 				if(s[i].equals("Thursday")){ps.setInt(1,5);	ps.executeUpdate();	}
 				if(s[i].equals("Friday")){ps.setInt(1,6);	ps.executeUpdate();	}
-				if(s[i].equals("Saturdat")){ps.setInt(1,7);	ps.executeUpdate();	}
+				if(s[i].equals("Saturday")){ps.setInt(1,7);	ps.executeUpdate();	}
 				System.out.println("inserted");
 			}
 		}

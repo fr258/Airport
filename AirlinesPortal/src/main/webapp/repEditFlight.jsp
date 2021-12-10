@@ -49,9 +49,9 @@
 				while(result8.next())
 				{
 					days[result8.getInt("days")-1]=true;
-					System.out.println(result8.getInt("days")-1);
+					//System.out.println(result8.getInt("days")-1);
 				}
-				System.out.println("done days");
+				//System.out.println("done days");
 			}
 		}
 		
@@ -114,7 +114,7 @@
 			%>
 			</select></td></tr>
 		<tr>
-		<td>Departure Time hh:mm:ss</td><td><input type="time" name="departureTime" value=<%=departTime %>></td>
+		<td>Departure Time hh:mm:ss</td><td><input type="time" name="departTime" value=<%=departTime %>></td>
 		</tr>
 		<tr>
 		<td>Arrival Time hh:mm:ss</td><td><input type="time" name="arrivalTime" value=<%=arrivalTime %>></td>
@@ -123,13 +123,13 @@
 		<td>is Domestic <input type="checkbox" name="isDomestic" <%if(isDomestic){ %> checked <%} %>></td>
 		</tr>
 		<tr>
-		<td><input type="checkbox" name="days" <%if(days[0]) {%> checked <%} %>>Sunday</td>
-		<td><input type="checkbox" name="days" <%if(days[1]) {%> checked <%} %>>Monday</td>
-		<td><input type="checkbox" name="days" <%if(days[2]) {%> checked <%} %>>Tuesday</td>
-		<td><input type="checkbox" name="days" <%if(days[3]) {%> checked <%} %>>Wednesday</td>
-		<td><input type="checkbox" name="days" <%if(days[4]) {%> checked <%} %>>Thursday</td>
-		<td><input type="checkbox" name="days" <%if(days[5]) {%> checked <%} %>>Friday</td>
-		<td><input type="checkbox" name="days" <%if(days[6]) {%> checked <%} %>>Saturday</td>
+		<td><input type="checkbox" name="days" value="Sunday" <%if(days[0]) {%> checked <%} %>>Sunday</td>
+		<td><input type="checkbox" name="days" value="Monday" <%if(days[1]) {%> checked <%} %>>Monday</td>
+		<td><input type="checkbox" name="days" value="Tuesday" <%if(days[2]) {%> checked <%} %>>Tuesday</td>
+		<td><input type="checkbox" name="days" value="Wednesday" <%if(days[3]) {%> checked <%} %>>Wednesday</td>
+		<td><input type="checkbox" name="days" value="Thursday" <%if(days[4]) {%> checked <%} %>>Thursday</td>
+		<td><input type="checkbox" name="days" value="Friday" <%if(days[5]) {%> checked <%} %>>Friday</td>
+		<td><input type="checkbox" name="days" value="Saturday" <%if(days[6]) {%> checked <%} %>>Saturday</td>
 		</tr>
 		</table>
 		<br> 
@@ -141,6 +141,7 @@
 	<%
 	if(request.getParameter("arrivalApID")!=null)
 	{
+		//System.out.print("hi");
 		String fid = request.getParameter("fnum");
 		String airlineid = request.getParameter("aID");
 		 String arApID = request.getParameter("arrivalApID");if(arApID==null){arApID="";}
@@ -155,7 +156,7 @@
 			}
 		 
 		Statement stmt9 = con1.createStatement();
-		String up = "UPDATE flight SET arrivalApID = ? ,departApID = ? , acrID = ? ,departTime = ? , arrivalTime = ? , isDomestic = ? WHERE fnum = ? and aID= ?" + "VALUES(?,?,?,?,?,?,?,?)";
+		String up = "UPDATE flight SET arrivalApID = ? ,departApID = ? , acrID = ? ,departTime = ? , arrivalTime = ? , isDomestic = ? WHERE fnum = ? and aID= ?";
 		PreparedStatement ps1 = con1.prepareStatement(up);
 		ps1.setString(1,arApID);
 		ps1.setString(2, dID);
@@ -165,6 +166,31 @@
 		ps1.setBoolean(6, dom);
 		ps1.setString(7,fid);
 		ps1.setString(8,airlineid);
+		ps1.executeUpdate();
+		
+		
+		String s[] = request.getParameterValues("days");
+		//if(s!=null && s.length!=0)
+		//{
+			Statement stmt10 = con1.createStatement();
+			stmt10.executeUpdate("DELETE FROM operatingDays WHERE fnum = '"+fid+"' and aID = '"+airlineid+"' ;");
+			//System.out.println(s[0]+" " + s[1]);
+			String insert = "INSERT INTO operatingDays(days, fnum, aID)"+ "VALUES(?,?,?)";
+			PreparedStatement ps= con1.prepareStatement(insert);
+			ps.setString(2, fid);
+			ps.setString(3, airlineid);
+			for(int i = 0; i<s.length; i++)
+			{
+				if(s[i].equals("Sunday")){ps.setInt(1,1);	ps.executeUpdate();	}
+				if(s[i].equals("Monday")){ps.setInt(1,2);	ps.executeUpdate();	}
+				if(s[i].equals("Tuesday")){ps.setInt(1,3);	ps.executeUpdate();	}
+				if(s[i].equals("Wednesday")){ps.setInt(1,4);	ps.executeUpdate();	}
+				if(s[i].equals("Thursday")){ps.setInt(1,5);	ps.executeUpdate();	}
+				if(s[i].equals("Friday")){ps.setInt(1,6);	ps.executeUpdate();	}
+				if(s[i].equals("Saturday")){ps.setInt(1,7);	ps.executeUpdate();	}
+				//System.out.println("inserted"+i);
+			}
+		//}
 		
 	}
 	
