@@ -32,7 +32,7 @@
 					
 			if(msg.isEmpty()) {
 				//Make an insert statement for the questions table:
-				String cancel = "update ticket set isCancelled = 1 where tID = ?";
+				String cancel = "update ticket set isCancelled = 1, totalFare = 50 where tID = ?";
              	ps = con.prepareStatement(cancel);
              	ps.setInt(1, rs.getInt("tID"));
              	ps.executeUpdate();
