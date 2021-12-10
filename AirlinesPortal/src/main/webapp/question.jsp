@@ -73,9 +73,8 @@
   			  } else {
    		 	String role = rs.getString("role");
     			if (role.equals("Representative")) {
-    				session.setAttribute("qID", qID);
     				%>
-    				<form method="post">
+    				<form method="post" action="processAnswer.jsp">
 					<table>
 						<tr>
 							<td>Type your answer.</td>
@@ -84,7 +83,7 @@
 						<td><textarea required name="text" rows="4" cols="50"></textarea></td>
 						</tr>
 					</table>
-			<button type="submit">Does not work</button>
+			<button type="submit" name = "id", value = <%= qID %>>Submit</button>
 		</form>
 			<%
    	 	}
