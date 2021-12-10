@@ -60,7 +60,7 @@
 <form action="processCancel.jsp" method="post">	
 		<table BORDER="1">
             <tr>
-            	<th>Ticked ID</th>
+            	<th>Ticket ID</th>
                 <th>Departure Airport</th>
 				<th>Arrival Airport</th>
 				<th>Date</th>

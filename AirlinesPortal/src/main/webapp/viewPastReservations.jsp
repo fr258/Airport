@@ -15,7 +15,7 @@
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();
 		String username = (String) session.getAttribute("username");
-		String tickets = "select t.tID tID from ticket t where t.username = '"+username+"' and t.isPast = 0 and t.isCanceled = 0";
+		String tickets = "select t.tID tID from ticket t where t.username = '"+username+"' and t.isPast = 0 and t.isCancelled = 0";
 		PreparedStatement ps = con.prepareStatement(tickets);
         ResultSet rs = ps.executeQuery();
         ResultSet rs3, rs4;
@@ -44,7 +44,6 @@
              		ps.setInt(3, rs4.getInt("fnum"));
              		ps.setString(4, username);
                  	ps.executeUpdate();
-                 	out.println(ps);
              	}
              	
          	}
