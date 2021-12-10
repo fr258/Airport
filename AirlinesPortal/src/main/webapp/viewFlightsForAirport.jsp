@@ -24,7 +24,7 @@
 		String airport = request.getParameter("airport");		
 		
 		//Make an insert statement for the Sells table:
-		String command = "SELECT * FROM flight WHERE arrivalApID = "+ airport + " union SELECT * FROM flight WHERE departApID = "+ airport;
+		String command = "SELECT * FROM flight WHERE arrivalApID = '"+ airport + "' union SELECT * FROM flight WHERE departApID = '"+ airport+"'";
 
 		ResultSet result = stmt.executeQuery(command); %>
 		
@@ -33,8 +33,8 @@
 			<td>Flight ID#</td>
 			</tr>
 			<tr>
-			<td><% if(result.next())
-				{out.print(result.getString("fnum"));} %></td>
+			<td><% while(result.next())
+				{out.println(result.getInt("fnum"));} %></td>
 			</tr>
 		</table>
 			
