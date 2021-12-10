@@ -15,9 +15,49 @@
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();
 		String username = (String) session.getAttribute("username");
-        String flights = "select h.flightDate date, h.fnum fnum, h.aID id from hasflight h where h.username = '"+username+"'";
-        PreparedStatement ps = con.prepareStatement(flights);
+		String tickets = "select t.tID tID from ticket t where t.username = '"+username+"' and t.isPast = 0 and t.isCanceled = 0";
+		PreparedStatement ps = con.prepareStatement(tickets);
         ResultSet rs = ps.executeQuery();
+        ResultSet rs3, rs4;
+		
+		 while(rs.next()){
+         	String ifPast = "select count(*) num from includes i where i.tID = ? and i.date > cast((now()) as date)";
+         	ps = con.prepareStatement(ifPast);
+         	ps.setInt(1, rs.getInt("tID"));
+         	rs3 = ps.executeQuery();
+         	rs3.next();
+         	if (rs3.getInt("num") == 0) {
+         		String newflight;
+             	String setPast = "update ticket set isPast = 1 where tID = ?";
+             	ps = con.prepareStatement(setPast);
+             	ps.setInt(1, rs.getInt("tID"));
+             	ps.executeUpdate();
+             	String pastFlights = "select i.fnum fnum, i.aID aID, i.date date from includes i where i.tID = ?";
+             	ps = con.prepareStatement(pastFlights);
+             	ps.setInt(1, rs.getInt("tID"));
+             	rs4 = ps.executeQuery();
+             	while (rs4.next()) {
+             		newflight = "INSERT INTO hasflight(flightDate, aID, fnum, username) VALUES (?, ?, ?, ?)";
+             		ps = con.prepareStatement(newflight);
+             		ps.setDate(1, rs4.getDate("date"));
+             		ps.setString(2, rs4.getString("aID"));
+             		ps.setInt(3, rs4.getInt("fnum"));
+             		ps.setString(4, username);
+                 	ps.executeUpdate();
+                 	out.println(ps);
+             	}
+             	
+         	}
+		 }
+		con.close();
+		
+		
+		
+		
+        String flights = "select h.flightDate date, h.fnum fnum, h.aID id from hasflight h where h.username = '"+username+"'";
+		Connection con1 = db.getConnection();
+        ps = con1.prepareStatement(flights);
+        rs = ps.executeQuery();
         boolean noFlights = false;
         if (!rs.next()) {
 	        	noFlights = true;
@@ -36,13 +76,12 @@
             while(rs.next()){
             	arrival = "select a.apname name from flight f, airport a where f.arrivalApID = a.apID and f.fnum = ? and f.aID = ?";	
             	departure = "select a.apname name from flight f, airport a where f.departApID = a.apID and f.fnum = ? and f.aID = ?";
-            	String query = "SELECT * FROM mobile_sales WHERE unit_sale >= ?";
                 //Creating the PreparedStatement object
-            	ps = con.prepareStatement(arrival);
+            	ps = con1.prepareStatement(arrival);
             	ps.setInt(1, rs.getInt("fnum"));
             	ps.setString(2, rs.getString("id"));
             	rs2 = ps.executeQuery();
-            	ps = con.prepareStatement(departure);
+            	ps = con1.prepareStatement(departure);
             	ps.setInt(1, rs.getInt("fnum"));
             	ps.setString(2, rs.getString("id"));
             	rs1 = ps.executeQuery();
@@ -73,7 +112,7 @@
 			request.setAttribute("msg", null);
 		}
 			//close the connection.
-			db.closeConnection(con);
+			db.closeConnection(con1);
 			%>
 			
 		
