@@ -62,7 +62,7 @@
             	ps.setInt(1, rs4.getInt("fnum"));
             	ps.setString(2, rs4.getString("aID"));
             	ps.setDate(3, rs4.getDate("date"));
-            	rs3 = ps.executeQuery(num);
+            	rs3 = ps.executeQuery();
             	rs3.next();
             	if (rs3.getInt("num") >= rs2.getInt("seats")) {
             		allowRes = false;
