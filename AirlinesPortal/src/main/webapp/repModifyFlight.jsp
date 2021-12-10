@@ -70,13 +70,13 @@
 		<td>is Domestic <input type="checkbox" name="isDomestic"></td>
 		</tr>
 		<tr>
-		<td><input type="checkbox" name="days">Sunday</td>
-		<td><input type="checkbox" name="days">Monday</td>
-		<td><input type="checkbox" name="days">Tuesday</td>
-		<td><input type="checkbox" name="days">Wednesday</td>
-		<td><input type="checkbox" name="days">Thursday</td>
-		<td><input type="checkbox" name="days">Friday</td>
-		<td><input type="checkbox" name="days">Saturday</td>
+		<td><input type="checkbox" name="days" value="Sunday">Sunday</td>
+		<td><input type="checkbox" name="days" value="Monday">Monday</td>
+		<td><input type="checkbox" name="days" value="Tuesday">Tuesday</td>
+		<td><input type="checkbox" name="days" value="Wednesday">Wednesday</td>
+		<td><input type="checkbox" name="days" value="Thursday">Thursday</td>
+		<td><input type="checkbox" name="days" value="Friday">Friday</td>
+		<td><input type="checkbox" name="days" value="Saturday">Saturday</td>
 		</tr>
 		</table>
 		<br> 
