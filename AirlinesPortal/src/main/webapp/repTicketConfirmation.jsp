@@ -14,46 +14,55 @@
 	ApplicationDB db1 = new ApplicationDB();	
 	Connection con1 = db1.getConnection(); 
 	Statement stmt1 = con1.createStatement();
+	ResultSet result1 = stmt1.executeQuery("SELECT fnum,aID FROM flight");
+	Statement stmt2 = con1.createStatement();
+	%>
 	
-	String username = request.getParameter("username");
-	String bookingFee = request.getParameter("bookingFee");
-	String totalFare = request.getParameter("totalFare");
-	int seatNum = request.getParameter("seatNum");
-	String classSeat = request.geteParameter("class");
+	<form method="post" action="repTicketConfirmation.jsp">
+	<table>
+	<tr>
+		<td>Select Flights</td>
+		</tr>
+		<tr><td><input type="hidden" name="tID" value=<%=request.getParameter("tID") %>></td></tr>
+		<tr>
+		<td>Flights</td><td>
+		<select name="flight" size=1>
+			<% while(result1.next())
+				{%>
+				<option value= <%=result1.getString("fnum")+result1.getString("aID")%> > <%=result1.getString("fnum")+result1.getString("aID")%>
+				<%}%>
+			</select></td></tr>
+		<tr>
+		<td>Seat Number</td><td><input type="number" name="seatNum"></td>
+		</tr>
+		<tr>
+		<td>Departure Date yyyy-mm-dd</td><td><input type="text" name="departDate"></td>
+		</tr>
+	</table>
+	<input type="submit" value="Add Flight To Ticket">
+	<br>
+	</form>
 	
+	<%
+	Statement stmt7 = con1.createStatement();
+	ResultSet result7 = stmt7.executeQuery("SELECT * FROM flight");
 	
-	ResultSet result1 = stmt1.executeQuery("SELECT * FROM flight");
-	String fnum=""; String aid="";
-	while(result1.next())
+	while(result7.next())
 	{
-		if((result1.getString("fnum")+result1.getString("aID")).equals(request.getParameter("flight")))
+		if((result7.getString("fnum")+result7.getString("aID")).equals(request.getParameter("flight")))
 		{
-			fnum = result1.getString("fnum");
-			aid = result1.getString("aID");
+			String s = "INSERT INTO includes(aid,fnum,date,tID,seatNum)"+"VALUES(?,?,?,?,?)";
+			PreparedStatement ps = con1.prepareStatement(s);
+			ps.setString(1,result7.getString("aID"));
+			ps.setString(2,result7.getString("fnum"));
+			ps.setString(3,request.getParameter("departDate"));
+			ps.setString(4,request.getParameter("tID"));
+			ps.setString(5,request.getParameter("seatNum"));
+			ps.executeUpdate();
+			//System.out.println("added flight to ticket");
+			break;
 		}
 	}
-	
-	String date = request.getString("departDate");
-	
-	//check if seat is taken or if date is incorrect
-	Statement stmt2 = con1.createStatement();
-	String select = "SELECT t.seatNum FROM ticket t, includes i, flight f WHERE f.aID = ? and f.fnum = ? and f.aID=i.aID and f.fnum = i.fnum and i.tID = t.tID and t.seatNum = ?";
-	PreparedStatement ps = con1.prepareStatement(select);
-	ps.setString(1,aid);
-	ps.setString(2,fnum);
-	ps.setInt(3,seatNum);
-	ResultSet rs1 = ps.executeQuery();
-	if(rs1.next())
-	{
-		out.println("seat is reserved, please choose another");
-	}
-	else
-	{
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-		cal.setTime(sdf.parse("Mon Mar 14 16:02:37 GMT 2011"));
-	}
-	
 	%>
 </body>
 </html>

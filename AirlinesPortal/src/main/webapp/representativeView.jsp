@@ -40,7 +40,7 @@
 	
 	<br>
 	<p> To edit reservation information, please input ticket ID </p>
-	<form method="post" action= "representativeView.jsp">
+	<form method="post" action= "editTicket.jsp">
 		<table>
 			<tr>    
 				<td>ticket ID</td><td><input type="text" name="tid"></td></tr>
@@ -54,19 +54,19 @@
 			ApplicationDB db3 = new ApplicationDB();
 			Connection con3 = db3.getConnection();
 			Statement stmt3 = con3.createStatement();
-			PreparedStatement ps3 = con3.prepareStatement("SELECT * FROM ticket WHERE tid=" +tid);
-	        ResultSet rs3 = ps3.executeQuery();
-			if(!rs3.next())
-			{
+			//PreparedStatement ps3 = con3.prepareStatement("SELECT * FROM ticket WHERE tid=" +tid);
+//	        ResultSet rs3 = ps3.executeQuery();
+	//		if(!rs3.next())
+		//	{
 				//basically that ticket doesnt exist;
 				//out.println("ticket does not exist");
-			}
-			else
-			{
-				request.getRequestDispatcher("editTicket.jsp").forward(request, response);
-			}
+			//}
+//			else
+	//		{
+		//		request.getRequestDispatcher("editTicket.jsp").forward(request, response);
+			//}
 			
-			db3.closeConnection(con3);
+			//db3.closeConnection(con3);
 	%>
 	
 	<p>Book Flight Tickets for Customer</p>
@@ -89,7 +89,7 @@
 				request.getRequestDispatcher("repBookTicket.jsp").forward(request, response);
 			}
 			
-			db3.closeConnection(con4);
+			db4.closeConnection(con4);
 	%>
 	
 	
