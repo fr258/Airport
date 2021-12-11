@@ -23,7 +23,6 @@
 			<table>
 				<tr>    
 					<td><form method="get" action="searchFlights.jsp"> <input type="submit" value="Search for Flights/ Buy Tickets"> </form></td>
-					<td><form method="get" action="searchFlights.jsp"> <input type="submit" value="Review Tickets"> </form></td>
 					<td><form method="get" action="viewQuestions.jsp"> <input type="submit" value="View Questions"> </form></td>
 				</tr>
 				<tr>    

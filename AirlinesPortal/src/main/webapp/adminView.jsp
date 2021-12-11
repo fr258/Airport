@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@ page import="java.io.*,java.util.*,java.sql.*,connection.*" %>
-<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,13 +12,7 @@
 		if(username == null)
 			request.getRequestDispatcher(("welcomePage.jsp")).forward(request, response);
 		session.setAttribute("username", username);
-		
-		ArrayList<String> errors = (ArrayList<String>) request.getAttribute("msg");
-		if(errors != null) {
-			for(String a: errors)
-				out.println(a);
-			request.setAttribute("msg", null);
-		}
+			
 	%>
 	
 	
@@ -120,8 +112,7 @@
 		<form method="get" action="listReservationsFlightNum.jsp">
 			<table>
 				<tr>
-					<td>Enter Flight Number (req)</td><td><input type="text" required name="fNum"></td>
-					<td>Enter Airline (req)</td><td><input type="text" required name="airline"></td>
+					<td>Enter Flight Number (req)</td><td><input type="text" name="fNum"></td>
 				</tr>
 			</table>
 			<input type="submit" value="Search">
@@ -132,7 +123,7 @@
 		<form method="get" action="listReservationsName.jsp">
 			<table>
 				<tr>
-					<td>Enter Customer Username (req)</td><td><input type="text" required name="name"></td>
+					<td>Enter Customer Username (req)</td><td><input type="text" name="name"></td>
 				</tr>
 			</table>
 			<input type="submit" value="Search">
@@ -143,8 +134,7 @@
 		<form method="get" action="revGenByFlight.jsp">
 			<table>
 				<tr>
-					<td>Enter Flight (req)</td><td><input type="text" required name="flight"></td>
-					<td>Enter Airline (req)</td><td><input type="text" required name="airline"></td>
+					<td>Enter Flight (req)</td><td><input type="text" name="flight"></td>
 				</tr>
 			</table>
 			<input type="submit" value="Find Revenue">
@@ -155,7 +145,7 @@
 		<form method="get" action="revGenByAirline.jsp">
 			<table>
 				<tr>
-					<td>Enter Airline (req)</td><td><input type="text" required name="flight"></td>
+					<td>Enter Airline (req)</td><td><input type="text" name="flight"></td>
 				</tr>
 			</table>
 			<input type="submit" value="Find Revenue">
@@ -166,7 +156,7 @@
 		<form method="get" action="revGenByCustomer.jsp">
 			<table>
 				<tr>
-					<td>Enter Username (req)</td><td><input type="text" required name="flight"></td>
+					<td>Enter Username (req)</td><td><input type="text" name="flight"></td>
 				</tr>
 			</table>
 			<input type="submit" value="Find Revenue">
