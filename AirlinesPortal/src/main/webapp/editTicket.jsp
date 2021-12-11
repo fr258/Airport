@@ -44,6 +44,7 @@
 	<br>
 	
 	<% 
+	if(request.getParameter("totalFare")!=null){
 		Statement stmt2 = con1.createStatement();
 	String s = "UPDATE ticket SET bookingFee = ?, totalFare = ?, class=? WHERE tID = ?";
 	PreparedStatement ps = con1.prepareStatement(s);
@@ -51,7 +52,7 @@
 	ps.setString(2,request.getParameter("totalFare"));
 	ps.setString(3, request.getParameter("class"));
 	ps.setString(4, request.getParameter("tid"));
-	ps.executeUpdate();
+	ps.executeUpdate();}
 	%>
 </body>
 </html>
