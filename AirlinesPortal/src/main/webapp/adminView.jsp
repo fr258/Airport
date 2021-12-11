@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ page import="java.io.*,java.util.*,java.sql.*,connection.*" %>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +14,13 @@
 		if(username == null)
 			request.getRequestDispatcher(("welcomePage.jsp")).forward(request, response);
 		session.setAttribute("username", username);
-			
+		
+		ArrayList<String> errors = (ArrayList<String>) request.getAttribute("msg");
+		if(errors != null) {
+			for(String a: errors)
+				out.println(a);
+			request.setAttribute("msg", null);
+		}
 	%>
 	
 	

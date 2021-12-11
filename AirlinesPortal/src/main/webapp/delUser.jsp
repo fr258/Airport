@@ -31,7 +31,7 @@
 	        if (!rs.next()) {
 				request.setAttribute("msg", "Cant find username");
 				out.print("Cant find username");
-				request.getRequestDispatcher("welcomePage.jsp").forward(request, response);
+				request.getRequestDispatcher("adminView.jsp").forward(request, response);
 	        }
 
 			//Make an delete statement for the userinfo table:
