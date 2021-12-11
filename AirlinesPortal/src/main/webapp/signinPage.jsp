@@ -48,7 +48,7 @@
 		    catch (Exception ex) {
 		    		out.print(ex);
 		    		out.print("select failed");
-		    	}
+		    }
 			 if(validUser) 
 				 request.getRequestDispatcher((role+"View.jsp")).forward(request, response);
 			else {

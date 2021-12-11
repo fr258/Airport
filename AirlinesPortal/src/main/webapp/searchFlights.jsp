@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" %>
-<%@ page import="java.io.*,java.util.*,java.sql.*,connection.* " %>
+<%@ page import="java.io.*,java.util.*,java.sql.*,connection.*, java.text.ParseException" %>
 <%@ page import="javax.servlet.http.*,javax.servlet.*,java.text.SimpleDateFormat"%>
 
 <!DOCTYPE html>
@@ -83,21 +83,30 @@
 			if((departure = request.getParameter("departDate")) != null) {
 				try {
 					java.util.Date dateDepart = new SimpleDateFormat("MM/dd/yyyy").parse(departure);
+					Calendar c = Calendar.getInstance();
+					c.setTime(dateDepart);
+					c.set(Calendar.HOUR_OF_DAY, 23);
+					c.set(Calendar.MINUTE, 59);
+					c.set(Calendar.SECOND, 59);
+					c.set(Calendar.MILLISECOND, 999);
+					java.util.Date dateDepartEndDay = c.getTime();
+					
 					if((arrival = request.getParameter("returnDate")) != null) {
 						java.util.Date dateReturn = new SimpleDateFormat("MM/dd/yyyy").parse(arrival);
 						if(dateDepart.after(dateReturn))
-							throw new Exception();
+							throw new ParseException("Arrival date is before the departure date.", 0);
 					}
-					if(dateDepart.before(new java.util.Date()))
-						throw new Exception();
+					if(dateDepartEndDay.before(new java.util.Date())) {
+						throw new ParseException("Departure date is before the current date.", 0);
+					}
 					
 					request.getRequestDispatcher("viewFlights.jsp").forward(request, response);
 				}
-				catch(Exception e) {
+				catch(ParseException e) {
 					out.println("Invalid date(s). Try again. Dates may be incorrectly formatted, before the current date, or the return date might precede the depart date.");
+					out.println(e.getMessage());
 				}
-			}
-			 
+			} 
 		} %>
 
 
