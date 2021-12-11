@@ -127,16 +127,50 @@
 			{
 				fnum = result7.getString("fnum");
 				aid = result7.getString("aID");
+				
+				String delete = "DELETE FROM waitingLine WHERE fnum = ? and aID = ? ;";//+"VALUES(?,?)";
+				
+				PreparedStatement ps = con1.prepareStatement(delete);
+				ps.setString(1,fnum);
+				ps.setString(2, aid);
+				
+				ps.executeUpdate();	
+				
+				 delete = "DELETE FROM hasFlight WHERE fnum = ? and aID = ? ;";//+"VALUES(?,?)";
+				
+				 ps = con1.prepareStatement(delete);
+				ps.setString(1,fnum);
+				ps.setString(2, aid);
+				
+				ps.executeUpdate();	
+				
+				 delete = "DELETE FROM includes WHERE fnum = ? and aID = ? ;";//+"VALUES(?,?)";
+				
+				 ps = con1.prepareStatement(delete);
+				ps.setString(1,fnum);
+				ps.setString(2, aid);
+				
+				ps.executeUpdate();	
+				
+				 delete = "DELETE FROM operatingDays WHERE fnum = ? and aID = ? ;";//+"VALUES(?,?)";
+				
+				 ps = con1.prepareStatement(delete);
+				ps.setString(1,fnum);
+				ps.setString(2, aid);
+				
+				ps.executeUpdate();	
+				
+				 delete = "DELETE FROM flight WHERE fnum = ? and aID = ? ;";//+"VALUES(?,?)";
+				
+				 ps = con1.prepareStatement(delete);
+				ps.setString(1,fnum);
+				ps.setString(2, aid);
+				
+				ps.executeUpdate();		
+				
 			}
 		}
-
-		String delete = "DELETE FROM flight WHERE fnum = ? and aID = ? ;";//+"VALUES(?,?)";
-		
-		PreparedStatement ps = con1.prepareStatement(delete);
-		ps.setString(1,fnum);
-		ps.setString(2, aid);
-		
-		ps.executeUpdate();		
+	
 		}
 		%>
 	<br>
