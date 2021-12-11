@@ -17,8 +17,14 @@
 	
 	
 	<p> Representative  View for <strong> <%= username %> </strong></p>
+			<table>
+				<tr>
+					<td><form method="get" action="viewQuestions.jsp"> <input type="submit" value="View Questions"> </form></td>
+				</tr>
+			</table>
 	<form method="post" action="welcomePage.jsp">
 		<input type="submit" value="logout">
 	</form>
+	
 </body>
 </html>
